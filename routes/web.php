@@ -3,8 +3,9 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HomeController;
-use App\Http\Controllers\RumahController;
-use App\Models\Rumah;
+use App\Http\Controllers\KontrakanController;
+use App\Http\Controllers\PengontrakController;
+use App\Models\Kontrakan;
 use Illuminate\Support\Facades\Auth;
 
 Route::group(['middleware' => 'guest'], function(){
@@ -16,12 +17,19 @@ Route::group(['middleware' => 'guest'], function(){
 
 Route::group(['middleware' => 'auth'], function(){
     Route::get('/home',[HomeController::class, 'index']);
-    Route::get('house',[RumahController::class, 'index']);
-    Route::get('house/create',[RumahController::class, 'create']);
-    Route::post('house-create',[RumahController::class, 'store']);
-    Route::get('house-edit/{id}',[RumahController::class,'edit']);
-    Route::post('update',[RumahController::class,'update']);
-    Route::get('delete/{id}',[RumahController::class,'destroy']);
+    //Kontrakan Route
+    Route::get('house',[KontrakanController::class, 'index']);
+    Route::get('house/create',[KontrakanController::class, 'create']);
+    Route::post('house-create',[KontrakanController::class, 'store']);
+    Route::get('house-edit/{id}',[KontrakanController::class,'edit']);
+    Route::post('update/{id}',[KontrakanController::class,'update']);
+    Route::get('delete/{id}',[KontrakanController::class,'destroy']);
+    //Pengontrak Route
+    Route::get('user',[PengontrakController::class, 'index']);
+    Route::get('user-create',[PengontrakController::class, 'create']);
+    Route::post('user-create',[PengontrakController::class, 'store']);
+    Route::get('user-edit/{id}',[PengontrakController::class, 'edit']);
+    Route::post('user-update/{id}',[PengontrakController::class, 'update']);
+    Route::get('user-delete/{id}',[PengontrakController::class, 'destroy']);
     Route::delete('logout', [AuthController::class, 'logout'])->name('logout');
 });
-    

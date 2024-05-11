@@ -11,10 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('penyewaan', function (Blueprint $table) {
+        Schema::create('penyewaans', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('id_kontrakan')->constrained('kontrakan')->cascadeOnDelete();
-            $table->foreignId('id_pengontrak')->constrained('pengontrak')->cascadeOnDelete();
+            $table->foreignId('id_kontrakan')->constrained('kontrakans')->cascadeOnDelete();
+            $table->foreignId('id_pengontrak')->constrained('pengontraks')->cascadeOnDelete();
             $table->date('tanggal_mulai');
             $table->date('tanggal_berakhir');
             $table->enum('status_pembayaran',['pending','tuntas'])->default('pending');

@@ -13,4 +13,9 @@ class Pengontrak extends Model
         "no_tlp",
     ];
     use HasFactory;
+
+    public function penyewaan()
+    {
+        return $this->hasMany(Penyewaan::class);
+    }
 }

@@ -12,6 +12,9 @@
       <label for="price" class="form-label"><strong>Harga Kontrakan Perbulan</strong></label>
       <input type="text" class="form-control" id="harga" name="harga" placeholder="Masukan Harga Kontrakan Disini" >
     </div>
+    <div class="mb-3">
+        
+    </div>
     <button type="submit" class="btn btn-primary">Create</button>
   </form>
 @endsection

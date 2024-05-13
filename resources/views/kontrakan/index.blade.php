@@ -13,6 +13,7 @@
         <th scope="col">#</th>
         <th scope="col">Kontrakan</th>
         <th scope="col">Harga</th>
+        <th scope="col">Ketersedian</th>
         <th scope="col" widht="280px">Action</th>
       </tr>
     </thead>
@@ -25,6 +26,7 @@
           <th scope="row">{{ $no++ }}</th>
           <td>{{ $d->nama }}</td>
           <td>{{ $d->harga }}</td>
+          <td>{{ $d->status_ketersedian }}</td>
           <td>
             <form action="{{ url('delete/'.$d->id) }}" method="GET">
                 <a href="{{ url('house-edit/'.$d->id) }}" class="btn btn-warning">Edit</a>

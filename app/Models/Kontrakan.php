@@ -11,7 +11,13 @@ class Kontrakan extends Model
     protected $fillable = [
         'nama',
         'harga',
+        'status_ketersedian',
     ];
 
     use HasFactory;
+
+    public function penyewaan()
+    {
+        return $this->hasMany(Penyewaan::class);
+    }
 }

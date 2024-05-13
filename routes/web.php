@@ -5,6 +5,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\KontrakanController;
 use App\Http\Controllers\PengontrakController;
+use App\Http\Controllers\PenyewaanController;
 use App\Models\Kontrakan;
 use Illuminate\Support\Facades\Auth;
 
@@ -31,5 +32,10 @@ Route::group(['middleware' => 'auth'], function(){
     Route::get('user-edit/{id}',[PengontrakController::class, 'edit']);
     Route::post('user-update/{id}',[PengontrakController::class, 'update']);
     Route::get('user-delete/{id}',[PengontrakController::class, 'destroy']);
+    //Penyewaan Route
+    Route::get('penyewaan',[PenyewaanController::class, 'index']);
+    Route::get('penyewaan-create',[PenyewaanController::class, 'create']);
+    Route::post('penyewaan-create',[PenyewaanController::class, 'store']);
+    Route::delete('penyewaan-cancel/{id}',[PenyewaanController::class, 'cancel']);
     Route::delete('logout', [AuthController::class, 'logout'])->name('logout');
 });

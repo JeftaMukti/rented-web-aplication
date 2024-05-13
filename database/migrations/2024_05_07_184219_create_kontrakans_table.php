@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('nama');
             $table->decimal('harga');
+            $table->enum('status_ketersedian',['kosong','isi'])->default('kosong');
             $table->timestamps();
         });
     }

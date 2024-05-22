@@ -6,6 +6,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\KontrakanController;
 use App\Http\Controllers\PengontrakController;
 use App\Http\Controllers\PenyewaanController;
+use App\Http\Controllers\PembayaranController;
 use App\Models\Kontrakan;
 use Illuminate\Support\Facades\Auth;
 
@@ -37,5 +38,9 @@ Route::group(['middleware' => 'auth'], function(){
     Route::get('penyewaan-create',[PenyewaanController::class, 'create']);
     Route::post('penyewaan-create',[PenyewaanController::class, 'store']);
     Route::delete('penyewaan-cancel/{id}',[PenyewaanController::class, 'cancel']);
+    //Pembayaran Route
+    Route::get('pembayara',[PembayaranController::class,'index']);
+    Route::get('pembayaran/{id}',[PembayaranController::class, 'pembayaran']);
+    Route::post('pembayarans/{id}',[PembayaranController::class, 'bayar']);
     Route::delete('logout', [AuthController::class, 'logout'])->name('logout');
 });

@@ -26,4 +26,9 @@ class Penyewaan extends Model
     {
         return $this->belongsTo(Pengontrak::class, 'id_pengontrak');
     }
+
+    public function pembayaran()
+    {
+        return $this->hasMany(Pembayaran::class, 'id_pembayaran');
+    }
 }

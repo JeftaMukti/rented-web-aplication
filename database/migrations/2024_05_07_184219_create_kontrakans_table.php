@@ -14,8 +14,9 @@ return new class extends Migration
         Schema::create('kontrakans', function (Blueprint $table) {
             $table->id();
             $table->string('nama');
-            $table->decimal('harga');
+            $table->bigInteger('harga');
             $table->enum('status_ketersedian',['kosong','isi'])->default('kosong');
+            $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
             $table->timestamps();
         });
     }

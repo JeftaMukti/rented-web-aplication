@@ -4,13 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\Pengontrak;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
 class PengontrakController extends Controller
 {
     public function index()
     {
-        $data = Pengontrak::orderBy('id','desc')->paginate(5);
+        $data = Pengontrak::where('user_id',auth()->id())->get();
         return view('pengontrak.index',compact('data'));
     }
 
@@ -21,6 +22,7 @@ class PengontrakController extends Controller
 
     public function store(Request $request)
     {
+        $user = Auth::user();
         $request->validate([
             'nama' => 'required',
             'no_tlp' => 'required',
@@ -29,6 +31,7 @@ class PengontrakController extends Controller
         $pengontrak = new Pengontrak;
         $pengontrak->nama = $request->nama;
         $pengontrak->no_tlp = $request->no_tlp;
+        $pengontrak->user_id = $user->id;
         $pengontrak->save();
 
         return redirect('user')->with('success','data pengontrak Berhasil Dibuat');

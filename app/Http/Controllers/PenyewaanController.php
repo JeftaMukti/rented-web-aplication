@@ -6,7 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Models\Penyewaan;
 use App\Models\Kontrakan;
 use App\Models\Pengontrak;
+use App\Models\Pembayaran;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
 class PenyewaanController extends Controller
@@ -16,7 +18,7 @@ class PenyewaanController extends Controller
      */
     public function index()
     {
-        $data = Penyewaan::all();
+        $data = Penyewaan::where('user_id', auth()->id())->get();
         return view("penyewaan.index",compact('data'));
     }
 
@@ -25,8 +27,8 @@ class PenyewaanController extends Controller
      */
     public function create()
     {
-        $kontrakan = Kontrakan::where('status_ketersedian','kosong')->get();
-        $pengontrak = Pengontrak::all();
+        $kontrakan = Kontrakan::where('user_id', auth()->id())->where('status_ketersedian','kosong')->get();
+        $pengontrak = Pengontrak::where('user_id', auth()->id())->get();
         return view('penyewaan.create',compact('kontrakan','pengontrak'));
     }
 
@@ -35,6 +37,7 @@ class PenyewaanController extends Controller
      */
     public function store(Request $request)
     {
+        $user = Auth::user();
         $request->validate([
             "id_kontrakan" => "required",
             "id_pengontrak" => "required",
@@ -50,11 +53,20 @@ class PenyewaanController extends Controller
         $penyewaan->tanggal_mulai = $tanggalMulai;
         $penyewaan->tanggal_berakhir = $tanggalBerakhir ;
         $penyewaan->status_pembayaran;
+        $penyewaan->user_id = $user->id;
         $penyewaan->save();
 
+        // melakukan fungsi untuk membuat status ketersedian dari kosong menjadi isi saat create penyewaan di eksekusi
         $kontrakan = Kontrakan::findOrFail($request->id_kontrakan);
         $kontrakan->status_ketersedian = "isi";
         $kontrakan->save();
+
+        $pembayaran = new Pembayaran();
+        $pembayaran->id_penyewaan = $penyewaan->id;
+        $pembayaran->jumlah_pembayaran = $kontrakan->harga;
+        $pembayaran->status_pembayaran = "pending";
+        $pembayaran->user_id = $user->id;
+        $pembayaran->save();
 
         return redirect('penyewaan')->with('success','data berhasil di tambahkan');
     }
@@ -82,9 +94,7 @@ class PenyewaanController extends Controller
      */
     public function edit(string $id)
     {
-        $kontrakan = Kontrakan::where('status_ketersedian','kosong')->get();
-        $pengontrak = Pengontrak::all();
-        return view('penyewaan.edit',compact('kontrakan','pengontrak'));
+     //
     }
 
     /**
@@ -92,9 +102,7 @@ class PenyewaanController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $request->validate([
-            ''
-        ]);
+        //
     }
 
     /**

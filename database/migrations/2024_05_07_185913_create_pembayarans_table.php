@@ -14,9 +14,10 @@ return new class extends Migration
         Schema::create('pembayarans', function (Blueprint $table) {
             $table->id();
             $table->foreignId('id_penyewaan')->constrained('penyewaans')->cascadeOnDelete();
-            $table->date('tanggal_pembayaran');
+            $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
+            $table->date('tanggal_pembayaran')->nullable();
             $table->bigInteger('jumlah_pembayaran');
-            $table->enum('status_pembayaran',['pending','tuntas']);
+            $table->enum('status_pembayaran',['pending','tuntas'])->default('tuntas');
             $table->timestamps();
         });
     }

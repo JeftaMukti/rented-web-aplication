@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\Kontrakan;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
 class KontrakanController extends Controller
@@ -13,7 +14,7 @@ class KontrakanController extends Controller
      */
     public function index()
     {
-        $data = Kontrakan::orderBy('id','desc')->paginate(5);
+        $data = Kontrakan::where('user_id', auth()->id())->get();
         return view('kontrakan.index',compact('data'));
     }
 
@@ -22,7 +23,9 @@ class KontrakanController extends Controller
      */
     public function create()
     {
-        return view('kontrakan.create');
+        $user = Auth::user();
+        $kontrakan = Kontrakan::where('user_id',$user->id)->get();
+        return view('kontrakan.create',compact('user','kontrakan'));
     }
 
     /**
@@ -30,14 +33,18 @@ class KontrakanController extends Controller
      */
     public function store(Request $request)
     {
+        $user = Auth::user();
         $request->validate([
             'nama' => 'required',
             'harga' => 'required',
         ]);
 
+        $harga = str_replace('.','', $request->harga);
+
         $kontrakan = new Kontrakan;
         $kontrakan->nama = $request->nama;
-        $kontrakan->harga = $request->harga;
+        $kontrakan->harga = $harga;
+        $kontrakan->user_id = $user->id;
         $kontrakan->save();
         return redirect('house')->with('success','data Kontrakan Berhasil Dibuat');
     }
@@ -55,8 +62,10 @@ class KontrakanController extends Controller
      */
     public function edit(string $id)
     {
+        $user = Auth::user();
+        $kontrakan = Kontrakan::where('user_id',$user->id)->get();
         $data = Kontrakan::find($id);
-        return view('kontrakan.edit',compact('data'));
+        return view('kontrakan.edit',compact('data','user','kontrakan'));
     }
 
     /**
@@ -64,6 +73,7 @@ class KontrakanController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $user = Auth::user();
         $request->validate([
             'nama' => 'required',
             'harga' => 'required',
